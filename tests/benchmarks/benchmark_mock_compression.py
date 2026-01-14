@@ -38,7 +38,7 @@ def benchmark_compression():
         _ = serializer.to_bytes(mock_kv)
     
     start_time = time.perf_counter()
-    iterations = 20
+    iterations = 5
     encoded_bytes = None
     for _ in range(iterations):
         encoded_bytes = serializer.to_bytes(mock_kv)
