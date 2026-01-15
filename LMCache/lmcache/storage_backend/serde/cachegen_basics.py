@@ -5,7 +5,14 @@ from dataclasses import dataclass
 from typing import List
 from lmcache.utils import _lmcache_nvtx_annotate
 import os
+from enum import Enum
+
 CACHEGEN_GPU_MAX_TOKENS_PER_CHUNK = 256
+
+class CompressionMethod(Enum):
+    AC = "ac"
+    LZ4 = "lz4"
+    BIT_PACKING = "bit_packing"
 
 @dataclass
 class CacheGenConfig:
@@ -19,6 +26,7 @@ class CacheGenConfig:
     value_first_layers: int
     value_first_bins: int
     value_second_bins: int
+    compression_method: str = "ac"
 
     def __getitem__(self, key: str) -> int:
         return getattr(self, key)
@@ -138,6 +146,7 @@ class CacheGenGPUEncoderOutput:
     max_tensors_value: torch.Tensor
     num_heads: int
     head_size: int
+    compression_method: CompressionMethod = CompressionMethod.AC
 
     def __getitem__(self, key: str) -> int:
         return getattr(self, key)
